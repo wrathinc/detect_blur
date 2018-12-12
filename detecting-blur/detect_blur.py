@@ -50,10 +50,11 @@ def image_process(image):
 	'''
 
 	ap = argparse.ArgumentParser()
-	ap.add_argument("-t", "--threshold", type=float, default=20.0, 
+	ap.add_argument("-t", "--threshold", type=float, default=200.0, 
 	help="focus measures that fall below this value will be considered 'blurry'")
 	args = vars(ap.parse_args())
-	frequency_varince = laplacian(image)
+	src_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+	frequency_varince = laplacian(src_gray)
 	dirpath = os.getcwd()
 	try:
 		if frequency_varince < args["threshold"]:
@@ -65,7 +66,7 @@ def image_process(image):
 	else:
 		if frequency_varince > args["threshold"]:
 			cv2.imwrite(dirpath+"/blury_photo/image{}.jpg".format(frequency_varince),image)#--> sorts image into folders based on the vaule of lapcian
-	print(time.time()-start)
+	
 	   
 def imagePath(img):
 	''' image path 
@@ -91,3 +92,5 @@ if __name__ == "__main__":
 
 
 
+
+print(time.time()-start)
