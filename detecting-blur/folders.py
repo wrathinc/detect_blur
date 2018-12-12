@@ -1,7 +1,7 @@
 import os
 class __folder__():
 
-    def create_folders():
+    def create_folders(self):
 
         '''
         function to create dir
