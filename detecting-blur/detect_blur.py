@@ -2,7 +2,7 @@
 # python detect_blur.py 
 from imutils import paths
 import numpy as np 
-import argparse
+import argparse  as give_argument
 import cv2
 import os, time 
 from folders import __folder__
@@ -13,44 +13,49 @@ start = time.time()
 __folder__.create_folders(self=__file__)
 
 def image_process(image):
-	''' image_process passes 
-		args  : ap.argarse.ArgumentParser()
-
-		usage : 
-			ArgumentParser parses arguments 
-			through the parse_args() method.
-			This will inspect the command line,
-			 convert each argument to the appropriate; 
-			type and then invoke the appropriate action. 
-			In most cases, this means a simple
-			Namespace object will be built up from attributes 
-			parsed out of the command line:
+	''' image_process 
+		args	    :   images
+		function    :   cv2.cvtColor(image, cv2.COLOR_BGR2GRAY),
+						blur_laplacian.laplacian(src_gray)
+		usage 		: 
+						coverts the image into gray
+						returns vaule for function bulr_laplacian
 	'''
-	blur_laplacian.laplacian(self=image)
-	ap = argparse.ArgumentParser()
-	ap.add_argument("-t", "--threshold", type=float, default=200.0, 
-	help="focus measures that fall below this value will be considered 'blurry'")
-	args = vars(ap.parse_args())
-	src_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+	src_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)	
 	frequency_varince = blur_laplacian.laplacian(src_gray)
-	dirpath = os.getcwd()
+	imageSort(frequency_varince,image)
+
+
+def imageSort(frequency_varince,image):
+	""" have a dict for now that sets a threshold vaule for how
+		sort the image. Then we use cv2.imwrite to save the image in a folder.
+
+		args	: freqency_varince, image
+		usage : sort images into folders 
+
+	 """
+	args = {"threshold":200}
+
 	try:
 		if frequency_varince < args["threshold"]:
-			cv2.imwrite(dirpath+"/not_blurry/image{}.jpg".format(frequency_varince),image) #--> sorts image into folders based on the vaule of lapcian
+			cv2.imwrite(os.getcwd()+"/not_blurry/image{}.jpg".format(frequency_varince),image) #--> sorts image into folders based on the vaule of lapcian
 		
 	except(RuntimeError, TypeError, NameError) as e:
 		print(e)
 
 	else:
 		if frequency_varince > args["threshold"]:
-			cv2.imwrite(dirpath+"/blury_photo/image{}.jpg".format(frequency_varince),image)#--> sorts image into folders based on the vaule of lapcian
+			cv2.imwrite(os.getcwd()+"/blury_photo/image{}.jpg".format(frequency_varince),image)#--> sorts image into folders based on the vaule of lapcian
 	
-	   
+
+
 def main():
 	'''main function runs a forloop though our directory images'''
+
 	for file in paths.list_images("images"):
 		image = cv2.imread(file)
 		image_process(image)
+		
 
 
 if __name__ == "__main__":

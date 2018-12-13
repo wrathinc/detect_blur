@@ -21,4 +21,6 @@ class blur_laplacian():
             Python:
             dst	=	cv.Laplacian(	src, ddepth[, dst[, ksize[, scale[, delta[, borderType]]]]]	)
         '''
+
+        #raise ValueError("needs to be an np.array")
         return cv2.Laplacian(self, cv2.CV_64F).var()
